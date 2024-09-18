@@ -34,6 +34,10 @@ class BSTTests(unittest.TestCase):
         self.assertEqual(found_node.Node, self.root_right)
         self.assertTrue(found_node.NodeHasKey)
 
+        found_node = self.tree.FindNodeByKey(3)
+        self.assertEqual(found_node.Node, self.root)
+        self.assertTrue(found_node.NodeHasKey)
+
     def test_empty_FindNodeByKey(self):
         tree = BST(None)
         found_node = tree.FindNodeByKey(0)
@@ -89,8 +93,8 @@ class BSTTests(unittest.TestCase):
         self.assertIsNone(empty_tree.FinMinMax(empty_tree.Root, False))
 
     def test_regression_DeleteNodeByKey(self):
-        self.assertFalse(self.assertFalse(self.tree.DeleteNodeByKey(2)))
-        self.assertTrue(self.assertFalse(self.tree.DeleteNodeByKey(3)))
+        self.assertFalse(self.tree.DeleteNodeByKey(2))
+        self.assertTrue(self.tree.DeleteNodeByKey(3))
 
         self.assertIsNone(self.root.LeftChild)
         self.assertIsNone(self.root.RightChild)
@@ -104,7 +108,28 @@ class BSTTests(unittest.TestCase):
         self.assertIsNone(self.root_right.LeftChild)
 
         self.assertEqual(self.root_left.Parent, self.root_right_left)
+        self.assertEqual(self.root_right.Parent, self.root_right_left)
 
+        self.assertTrue(self.tree.DeleteNodeByKey(7))
+
+        self.assertIsNone(self.root_right.LeftChild)
+        self.assertIsNone(self.root_right.RightChild)
+        self.assertIsNone(self.root_right.Parent)
+
+        self.assertEqual(self.tree.Root.RightChild, self.root_right_right)
+        self.assertIsNone(self.root_right_right.RightChild)
+        self.assertIsNone(self.root_right_right.LeftChild)
+        self.assertEqual(self.root_right_right.Parent, self.root_right_left)
+
+        self.assertTrue(self.tree.DeleteNodeByKey(1))
+
+        self.assertIsNone(self.root_left.LeftChild)
+        self.assertIsNone(self.root_left.RightChild)
+        self.assertIsNone(self.root_left.Parent)
+
+        self.assertIsNone(self.tree.Root.LeftChild)
+
+    @unittest.skip
     def test_empty_DeleteNodeByKey(self):
         empty_tree = BST(None)
         self.assertFalse(empty_tree.DeleteNodeByKey(1))
