@@ -122,4 +122,13 @@ class BST:
         return True
 
     def Count(self):
-        return 0  # количество узлов в дереве
+        return self.Count_recursive(self.Root)
+
+    def Count_recursive(self, node):
+        if node is None:
+            return 0
+        return (
+            1
+            + self.Count_recursive(node.RightChild)
+            + self.Count_recursive(node.LeftChild)
+        )

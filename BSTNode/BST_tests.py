@@ -45,11 +45,12 @@ class BSTTests(unittest.TestCase):
         self.assertFalse(found_node.NodeHasKey)
         self.assertFalse(found_node.ToLeft)
 
-    def test_regression_AddKeyValue(self):
-        # Add existing key, nothon happens.
+    def test_regression_AddKeyValue_andCount(self):
+        # Add existing key, nothing happens.
         self.assertFalse(self.tree.AddKeyValue(3, 100))
         self.assertEqual(self.root.NodeKey, 3)
         self.assertEqual(self.root.NodeValue, 1)
+        self.assertEqual(self.tree.Count(), 5)
 
         # Add left side.
         self.assertTrue(self.tree.AddKeyValue(4, 101))
@@ -57,6 +58,7 @@ class BSTTests(unittest.TestCase):
         self.assertEqual(self.root_right_left.LeftChild.NodeKey, 4)
         self.assertEqual(self.root_right_left.LeftChild.NodeValue, 101)
         self.assertEqual(self.root_right_left.LeftChild.Parent, self.root_right_left)
+        self.assertEqual(self.tree.Count(), 6)
 
         # Add right side.
         self.assertTrue(self.tree.AddKeyValue(10, 102))
@@ -64,6 +66,7 @@ class BSTTests(unittest.TestCase):
         self.assertEqual(self.root_right_right.RightChild.NodeKey, 10)
         self.assertEqual(self.root_right_right.RightChild.NodeValue, 102)
         self.assertEqual(self.root_right_right.RightChild.Parent, self.root_right_right)
+        self.assertEqual(self.tree.Count(), 7)
 
     def test_empty_AddKeyValue(self):
         empty_tree = BST(None)
@@ -92,9 +95,12 @@ class BSTTests(unittest.TestCase):
         self.assertIsNone(empty_tree.FinMinMax(empty_tree.Root, True))
         self.assertIsNone(empty_tree.FinMinMax(empty_tree.Root, False))
 
-    def test_regression_DeleteNodeByKey(self):
+    def test_regression_DeleteNodeByKey_and_Count(self):
         self.assertFalse(self.tree.DeleteNodeByKey(2))
+        self.assertEqual(self.tree.Count(), 5)
+
         self.assertTrue(self.tree.DeleteNodeByKey(3))
+        self.assertEqual(self.tree.Count(), 4)
 
         self.assertIsNone(self.root.LeftChild)
         self.assertIsNone(self.root.RightChild)
@@ -111,6 +117,7 @@ class BSTTests(unittest.TestCase):
         self.assertEqual(self.root_right.Parent, self.root_right_left)
 
         self.assertTrue(self.tree.DeleteNodeByKey(7))
+        self.assertEqual(self.tree.Count(), 3)
 
         self.assertIsNone(self.root_right.LeftChild)
         self.assertIsNone(self.root_right.RightChild)
@@ -122,6 +129,7 @@ class BSTTests(unittest.TestCase):
         self.assertEqual(self.root_right_right.Parent, self.root_right_left)
 
         self.assertTrue(self.tree.DeleteNodeByKey(1))
+        self.assertEqual(self.tree.Count(), 2)
 
         self.assertIsNone(self.root_left.LeftChild)
         self.assertIsNone(self.root_left.RightChild)
@@ -129,10 +137,13 @@ class BSTTests(unittest.TestCase):
 
         self.assertIsNone(self.tree.Root.LeftChild)
 
-    @unittest.skip
     def test_empty_DeleteNodeByKey(self):
         empty_tree = BST(None)
         self.assertFalse(empty_tree.DeleteNodeByKey(1))
+
+    def test_empty_Count(self):
+        empty_tree = BST(None)
+        self.assertEqual(empty_tree.Count(), 0)
 
 
 if __name__ == "__main__":
