@@ -140,21 +140,21 @@ class BST:
         return True
 
     def Count(self) -> int:
-        return self.Count_recursive(self.Root)
+        return self._Count_recursive(self.Root)
 
-    def Count_recursive(self, node: Optional[BSTNode]) -> int:
+    def _Count_recursive(self, node: Optional[BSTNode]) -> int:
         if node is None:
             return 0
         return (
             1
-            + self.Count_recursive(node.RightChild)
-            + self.Count_recursive(node.LeftChild)
+            + self._Count_recursive(node.RightChild)
+            + self._Count_recursive(node.LeftChild)
         )
 
     def WideAllNodes(self) -> tuple[BSTNode, ...]:
-        return self.WideAllNodes_recursive([self.Root], ())
+        return self._WideAllNodes_recursive([self.Root], ())
 
-    def WideAllNodes_recursive(
+    def _WideAllNodes_recursive(
         self, current_nodes: list[Optional[BSTNode]], result: tuple[BSTNode, ...]
     ) -> tuple[BSTNode, ...]:
         if current_nodes.count(None) == len(current_nodes):
@@ -166,12 +166,12 @@ class BST:
             result += (node,)
             childs_of_current_nodes.append(node.LeftChild)
             childs_of_current_nodes.append(node.RightChild)
-        return self.WideAllNodes_recursive(childs_of_current_nodes, result)
+        return self._WideAllNodes_recursive(childs_of_current_nodes, result)
 
     def DeepAllNodes(self, order: int) -> tuple[BSTNode, ...]:
-        return self.DeepAllNodes_recursive(order, self.Root)
+        return self._DeepAllNodes_recursive(order, self.Root)
 
-    def DeepAllNodes_recursive(
+    def _DeepAllNodes_recursive(
         self, order: int, from_node: Optional[BSTNode]
     ) -> tuple[BSTNode, ...]:
         if from_node is None:
@@ -179,25 +179,25 @@ class BST:
         # in-order
         if order == 0 and from_node is self.Root:
             return (
-                self.DeepAllNodes_recursive(order, from_node.LeftChild)
+                self._DeepAllNodes_recursive(order, from_node.LeftChild)
                 + (self.Root,)
-                + self.DeepAllNodes_recursive(order, from_node.RightChild)
+                + self._DeepAllNodes_recursive(order, from_node.RightChild)
             )
         # post-order
         if order == 1 and from_node is self.Root:
             return (
-                self.DeepAllNodes_recursive(order, from_node.LeftChild)
-                + self.DeepAllNodes_recursive(order, from_node.RightChild)
+                self._DeepAllNodes_recursive(order, from_node.LeftChild)
+                + self._DeepAllNodes_recursive(order, from_node.RightChild)
                 + (self.Root,)
             )
         # pre-order
         if order == 2 and from_node == self.Root:
             return (
                 (self.Root,)
-                + self.DeepAllNodes_recursive(order, from_node.LeftChild)
-                + self.DeepAllNodes_recursive(order, from_node.RightChild)
+                + self._DeepAllNodes_recursive(order, from_node.LeftChild)
+                + self._DeepAllNodes_recursive(order, from_node.RightChild)
             )
 
-        return self.DeepAllNodes_recursive(
+        return self._DeepAllNodes_recursive(
             order, from_node.LeftChild
-        ) + self.DeepAllNodes_recursive(order, from_node.RightChild)
+        ) + self._DeepAllNodes_recursive(order, from_node.RightChild)
