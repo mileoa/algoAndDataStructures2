@@ -177,27 +177,24 @@ class BST:
         if from_node is None:
             return ()
         # in-order
-        if order == 0 and from_node is self.Root:
+        if order == 0:
+
             return (
                 self._DeepAllNodes_recursive(order, from_node.LeftChild)
-                + (self.Root,)
+                + (from_node,)
                 + self._DeepAllNodes_recursive(order, from_node.RightChild)
             )
         # post-order
-        if order == 1 and from_node is self.Root:
+        if order == 1:
             return (
                 self._DeepAllNodes_recursive(order, from_node.LeftChild)
                 + self._DeepAllNodes_recursive(order, from_node.RightChild)
-                + (self.Root,)
+                + (from_node,)
             )
         # pre-order
-        if order == 2 and from_node == self.Root:
+        if order == 2:
             return (
-                (self.Root,)
+                (from_node,)
                 + self._DeepAllNodes_recursive(order, from_node.LeftChild)
                 + self._DeepAllNodes_recursive(order, from_node.RightChild)
             )
-
-        return self._DeepAllNodes_recursive(
-            order, from_node.LeftChild
-        ) + self._DeepAllNodes_recursive(order, from_node.RightChild)

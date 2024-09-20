@@ -11,23 +11,25 @@ class AllNodesTests(unittest.TestCase):
         self.root_left = BSTNode(1, 2, self.root)
         self.root_right = BSTNode(7, 2, self.root)
         self.root_right_left = BSTNode(5, 3, self.root_right)
+        self.root_right_left_right = BSTNode(6, 4, self.root_right_left)
         self.root_right_right = BSTNode(9, 3, self.root_right)
         self.root_right.LeftChild = self.root_right_left
         self.root_right.RightChild = self.root_right_right
         self.root.LeftChild = self.root_left
         self.root.RightChild = self.root_right
+        self.root_right_left.RightChild = self.root_right_left_right
 
         self.tree = BST(self.root)
 
-    @unittest.skip
     def test_regression_DeepAllNodes(self):
         self.assertEqual(
             self.tree.DeepAllNodes(0),
             (
                 self.root_left,
                 self.root,
-                self.root_right,
                 self.root_right_left,
+                self.root_right_left_right,
+                self.root_right,
                 self.root_right_right,
             ),
         )
@@ -35,6 +37,7 @@ class AllNodesTests(unittest.TestCase):
             self.tree.DeepAllNodes(1),
             (
                 self.root_left,
+                self.root_right_left_right,
                 self.root_right_left,
                 self.root_right_right,
                 self.root_right,
@@ -48,6 +51,7 @@ class AllNodesTests(unittest.TestCase):
                 self.root_left,
                 self.root_right,
                 self.root_right_left,
+                self.root_right_left_right,
                 self.root_right_right,
             ),
         )
@@ -67,6 +71,7 @@ class AllNodesTests(unittest.TestCase):
                 self.root_right,
                 self.root_right_left,
                 self.root_right_right,
+                self.root_right_left_right,
             ),
         )
 
