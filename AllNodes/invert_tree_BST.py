@@ -151,57 +151,6 @@ class BST:
             + self._Count_recursive(node.LeftChild)
         )
 
-    def WideAllNodes(self) -> tuple[BSTNode, ...]:
-        return self._WideAllNodes_recursive([self.Root], ())
-
-    def _WideAllNodes_recursive(
-        self, current_nodes: list[Optional[BSTNode]], result: tuple[BSTNode, ...]
-    ) -> tuple[BSTNode, ...]:
-        if current_nodes.count(None) == len(current_nodes):
-            return result
-        childs_of_current_nodes: list[Optional[BSTNode]] = []
-        for node in current_nodes:
-            if node is None:
-                continue
-            result += (node,)
-            childs_of_current_nodes.append(node.LeftChild)
-            childs_of_current_nodes.append(node.RightChild)
-        return self._WideAllNodes_recursive(childs_of_current_nodes, result)
-
-    def DeepAllNodes(self, order: int) -> tuple[BSTNode, ...]:
-        return self._DeepAllNodes_recursive(order, self.Root)
-
-    def _DeepAllNodes_recursive(
-        self, order: int, from_node: Optional[BSTNode]
-    ) -> tuple[BSTNode, ...]:
-        if from_node is None:
-            return ()
-        # in-order
-        if order == 0 and from_node is self.Root:
-            return (
-                self._DeepAllNodes_recursive(order, from_node.LeftChild)
-                + (self.Root,)
-                + self._DeepAllNodes_recursive(order, from_node.RightChild)
-            )
-        # post-order
-        if order == 1 and from_node is self.Root:
-            return (
-                self._DeepAllNodes_recursive(order, from_node.LeftChild)
-                + self._DeepAllNodes_recursive(order, from_node.RightChild)
-                + (self.Root,)
-            )
-        # pre-order
-        if order == 2 and from_node == self.Root:
-            return (
-                (self.Root,)
-                + self._DeepAllNodes_recursive(order, from_node.LeftChild)
-                + self._DeepAllNodes_recursive(order, from_node.RightChild)
-            )
-
-        return self._DeepAllNodes_recursive(
-            order, from_node.LeftChild
-        ) + self._DeepAllNodes_recursive(order, from_node.RightChild)
-
     def invert_tree(self) -> None:
         self._invert_tree_recursive([self.Root])
         return None
