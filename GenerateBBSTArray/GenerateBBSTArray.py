@@ -1,18 +1,18 @@
 from typing import Optional
 
 
-def GenerateBBSTArray(a: list[int]) -> list[int]:
+def GenerateBBSTArray(a: list[int]) -> list[Optional[int]]:
     a_sorted: list[int] = a[:]
     a_sorted.sort()
     return GenerateBBSTArray_recursive(a_sorted, len(a_sorted) // 2, 0, [None] * len(a))
 
 
 def GenerateBBSTArray_recursive(
-    a_sorted: list,
+    a_sorted: list[int],
     central_element_index: int,
     BST_node_index: int,
     BST: list[Optional[int]],
-) -> list[int]:
+) -> list[Optional[int]]:
     if BST_node_index > len(BST) - 1:
         return []
     BST[BST_node_index] = a_sorted[central_element_index]
