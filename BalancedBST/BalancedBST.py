@@ -48,15 +48,15 @@ class BalancedBST:
     def is_valid_subrtree(self, root_node: Optional[BSTNode]) -> bool:
         if root_node is None:
             return True
-        is_left_child_valid: bool = True
-        is_right_child_valid: bool = True
-        if root_node.LeftChild is not None:
-            is_left_child_valid = root_node.LeftChild.NodeKey < root_node.NodeKey
-        if root_node.RightChild is not None:
-            is_right_child_valid = root_node.RightChild.NodeKey > root_node.NodeKey
         return (
-            is_left_child_valid
-            and is_right_child_valid
+            (
+                root_node.LeftChild is None
+                or root_node.LeftChild.NodeKey < root_node.NodeKey
+            )
+            and (
+                root_node.RightChild is None
+                or root_node.RightChild.NodeKey > root_node.NodeKey
+            )
             and self.is_valid_subrtree(root_node.LeftChild)
             and self.is_valid_subrtree(root_node.RightChild)
         )
