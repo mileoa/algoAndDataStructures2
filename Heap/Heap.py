@@ -7,7 +7,8 @@ class Heap:
         self.HeapArray: list[Optional[int]] = []
 
     def MakeHeap(self, a: list[int], depth: int) -> None:
-        self.HeapArray = [None] * ((2 ** (depth + 1)) - 1)
+        heap_size: int = 2 ** (depth + 1) - 1
+        self.HeapArray = [None] * heap_size
         for node in a:
             if node is None:
                 continue

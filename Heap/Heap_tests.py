@@ -26,6 +26,10 @@ class HeapTests(unittest.TestCase):
         self.assertEqual(self.heap.HeapArray, [84, 62, 75, 37, None, None, None])
         self.assertEqual(len(self.heap.HeapArray), 7)
 
+        self.heap.MakeHeap([75, 62, 84, 37], 2)
+        self.assertEqual(self.heap.HeapArray, [84, 62, 75, 37, None, None, None])
+        self.assertEqual(len(self.heap.HeapArray), 7)
+
     def test_regression_GetMax(self):
         self.heap.MakeHeap([84, 75, 62, 50, 37, 25, 20], 2)
         self.assertEqual(self.heap.GetMax(), 84)
