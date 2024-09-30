@@ -3,13 +3,15 @@ from typing import Optional
 
 class Heap:
 
-    def __init__(self):
-        self.HeapArray: list[int] = []
+    def __init__(self) -> None:
+        self.HeapArray: list[Optional[int]] = []
 
     def MakeHeap(self, a: list[int], depth: int) -> None:
-        a_sorted: list[int] = a[:]
-        a_sorted.sort(reverse=True)
-        self.HeapArray = a_sorted
+        self.HeapArray = [None] * ((2 ** (depth + 1)) - 1)
+        for node in a:
+            if node is None:
+                continue
+            self.Add(node)
 
     def GetMax(self) -> int:
         if self.HeapArray.count(None) == len(self.HeapArray):
@@ -17,6 +19,7 @@ class Heap:
         last_nonempty_element_index: int = max(
             index for index, value in enumerate(self.HeapArray) if value is not None
         )
+        assert self.HeapArray[0] is not None
         max_element: int = self.HeapArray[0]
         self.HeapArray[0] = self.HeapArray[last_nonempty_element_index]
         self.HeapArray[last_nonempty_element_index] = None

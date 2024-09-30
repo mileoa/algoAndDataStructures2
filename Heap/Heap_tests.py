@@ -15,11 +15,15 @@ class HeapTests(unittest.TestCase):
         self.assertEqual(len(self.heap.HeapArray), 1)
 
         self.heap.MakeHeap([3, 2, 5], 1)
-        self.assertEqual(self.heap.HeapArray, [5, 3, 2])
+        self.assertEqual(self.heap.HeapArray, [5, 2, 3])
         self.assertEqual(len(self.heap.HeapArray), 3)
 
         self.heap.MakeHeap([75, 62, 84, 37, 25, 50, 20], 2)
-        self.assertEqual(self.heap.HeapArray, [84, 75, 62, 50, 37, 25, 20])
+        self.assertEqual(self.heap.HeapArray, [84, 62, 75, 37, 25, 50, 20])
+        self.assertEqual(len(self.heap.HeapArray), 7)
+
+        self.heap.MakeHeap([75, 62, 84, 37, None, None, None], 2)
+        self.assertEqual(self.heap.HeapArray, [84, 62, 75, 37, None, None, None])
         self.assertEqual(len(self.heap.HeapArray), 7)
 
     def test_regression_GetMax(self):
