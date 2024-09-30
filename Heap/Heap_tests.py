@@ -45,6 +45,22 @@ class HeapTests(unittest.TestCase):
             self.heap.HeapArray, [None, None, None, None, None, None, None]
         )
 
+    def test_regression_Add(self):
+        self.heap.HeapArray = [1, None, None, None, None, None, None]
+        self.assertTrue(self.heap.Add(3))
+        self.assertEqual(self.heap.HeapArray, [3, 1, None, None, None, None, None])
+        self.assertTrue(self.heap.Add(5))
+        self.assertEqual(self.heap.HeapArray, [5, 1, 3, None, None, None, None])
+        self.assertTrue(self.heap.Add(7))
+        self.assertEqual(self.heap.HeapArray, [7, 5, 3, 1, None, None, None])
+        self.assertTrue(self.heap.Add(0))
+        self.assertEqual(self.heap.HeapArray, [7, 5, 3, 1, 0, None, None])
+        self.assertTrue(self.heap.Add(3))
+        self.assertEqual(self.heap.HeapArray, [7, 5, 3, 1, 0, 3, None])
+        self.assertTrue(self.heap.Add(10))
+        self.assertEqual(self.heap.HeapArray, [10, 5, 7, 1, 0, 3, 3])
+        self.assertFalse(self.heap.Add(2))
+
 
 if __name__ == "__main__":
     unittest.main()

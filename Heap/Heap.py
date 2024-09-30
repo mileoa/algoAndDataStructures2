@@ -37,12 +37,12 @@ class Heap:
                 (
                     self.HeapArray[left_child_index]
                     if self.HeapArray[left_child_index] is not None
-                    else current_index
+                    else self.HeapArray[current_index]
                 ),
                 (
                     self.HeapArray[right_child_index]
                     if self.HeapArray[right_child_index] is not None
-                    else current_index
+                    else self.HeapArray[current_index]
                 ),
             )
             if max_value == self.HeapArray[current_index]:
@@ -68,4 +68,25 @@ class Heap:
         return max_element
 
     def Add(self, key: int) -> bool:
-        return False
+        if self.HeapArray.count(None) == 0:
+            return False
+        last_empty_element_index: int = self.HeapArray.index(None)
+        self.HeapArray[last_empty_element_index] = key
+
+        current_index: int = last_empty_element_index
+        parent_index: int = (current_index - 1) // 2
+        is_balanced = False
+        while not is_balanced and parent_index >= 0:
+            if self.HeapArray[current_index] <= self.HeapArray[parent_index]:
+                is_balanced = True
+                continue
+
+            self.HeapArray[current_index], self.HeapArray[parent_index] = (
+                self.HeapArray[parent_index],
+                self.HeapArray[current_index],
+            )
+
+            current_index = parent_index
+            parent_index = (current_index - 1) // 2
+
+        return True
