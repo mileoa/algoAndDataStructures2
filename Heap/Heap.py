@@ -120,19 +120,19 @@ class Heap:
             and self._is_valid_subheap(right_child_index)
         )
 
-    def find_max_in_range(self, from_value: int, to_value: int) -> Optional[int]:
-        return self._find_max_in_range_recursive((from_value, to_value), 0)
+    def find_max_in_range(self, from_value: int, to_value: int) -> int:
+        return self._find_max_in_range_recursive(from_value, to_value, 0)
 
     def _find_max_in_range_recursive(
-        self, range: tuple[int, int], node_index: int
-    ) -> Optional[int]:
+        self, from_value: int, to_value: int, node_index: int
+    ) -> int:
         if self.HeapArray[node_index] is None:
-            return None
-        if self.HeapArray[node_index] < range[0]:
-            return None
+            return -1
+        if self.HeapArray[node_index] < from_value:
+            return -1
         if (
-            self.HeapArray[node_index] >= range[0]
-            and self.HeapArray[node_index] <= range[1]
+            self.HeapArray[node_index] >= from_value
+            and self.HeapArray[node_index] <= to_value
         ):
             return self.HeapArray[node_index]
 
@@ -141,28 +141,24 @@ class Heap:
         if left_child_index >= len(self.HeapArray) or right_child_index >= len(
             self.HeapArray
         ):
-            return None
+            return -1
         if (
             self.HeapArray[left_child_index] is None
             and self.HeapArray[right_child_index] is None
         ):
-            return None
+            return -1
         if self.HeapArray[left_child_index] is None:
-            return self._find_max_in_range_recursive(range, right_child_index)
+            return self._find_max_in_range_recursive(
+                from_value, to_value, right_child_index
+            )
         if self.HeapArray[right_child_index] is None:
-            return self._find_max_in_range_recursive(range, left_child_index)
-
-        supposed_values: list[Optional[int]] = [
-            self._find_max_in_range_recursive(range, left_child_index),
-            self._find_max_in_range_recursive(range, right_child_index),
-        ]
-        if supposed_values[0] is None and supposed_values[1] is None:
-            return None
-        if supposed_values[0] is None:
-            return supposed_values[1]
-        if supposed_values[1] is None:
-            return supposed_values[0]
-        return max(supposed_values)
+            return self._find_max_in_range_recursive(
+                from_value, to_value, left_child_index
+            )
+        return max(
+            self._find_max_in_range_recursive(from_value, to_value, left_child_index),
+            self._find_max_in_range_recursive(from_value, to_value, right_child_index),
+        )
 
     def add_level(self) -> None:
         new_depth: int = 0

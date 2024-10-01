@@ -77,14 +77,14 @@ class HeapTests(unittest.TestCase):
 
     def test_regression_find_max_in_range(self):
         self.heap.MakeHeap([75, 62, 84, 37, 25, 50, 20], 2)
-        self.assertEqual(self.heap.find_max_in_range(0, 1), None)
+        self.assertEqual(self.heap.find_max_in_range(0, 1), -1)
         self.assertEqual(self.heap.find_max_in_range(37, 37), 37)
         self.assertEqual(self.heap.find_max_in_range(21, 60), 50)
 
     def test_empty_find_max_in_range(self):
         empty_heap = Heap()
         empty_heap.MakeHeap([], 2)
-        self.assertEqual(empty_heap.find_max_in_range(0, 10000), None)
+        self.assertEqual(empty_heap.find_max_in_range(0, 10000), -1)
 
     def test_regression_union_from_heap(self):
         heap_one = Heap()
