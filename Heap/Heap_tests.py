@@ -69,6 +69,38 @@ class HeapTests(unittest.TestCase):
         self.assertEqual(self.heap.HeapArray, [10, 5, 7, 1, 0, 3, 3])
         self.assertFalse(self.heap.Add(2))
 
+    def test_regression_is_valid(self):
+        self.heap.MakeHeap([75, 62, 84, 37, 25, 50, 20], 2)
+        self.assertTrue(self.heap.is_valid())
+        self.heap.HeapArray[5] = 76
+        self.assertFalse(self.heap.is_valid())
+
+    def test_regression_find_max_in_range(self):
+        self.heap.MakeHeap([75, 62, 84, 37, 25, 50, 20], 2)
+        self.assertEqual(self.heap.find_max_in_range(0, 1), None)
+        self.assertEqual(self.heap.find_max_in_range(37, 37), 37)
+        self.assertEqual(self.heap.find_max_in_range(21, 60), 50)
+
+    def test_empty_find_max_in_range(self):
+        empty_heap = Heap()
+        empty_heap.MakeHeap([], 2)
+        self.assertEqual(empty_heap.find_max_in_range(0, 10000), None)
+
+    def test_regression_union_from_heap(self):
+        heap_one = Heap()
+        heap_one.MakeHeap([75, 62, 84], 1)
+        heap_two = Heap()
+        heap_two.MakeHeap([37, 25, 50], 1)
+        heap_three = Heap()
+        heap_three.MakeHeap([20], 0)
+
+        heap_one.union_from_heap(heap_two)
+        self.assertEqual(len(heap_one.HeapArray), 7)
+        self.assertCountEqual(heap_one.HeapArray, [75, 62, 84, 37, 25, 50, None])
+        heap_one.union_from_heap(heap_three)
+        self.assertEqual(len(heap_one.HeapArray), 7)
+        self.assertCountEqual(heap_one.HeapArray, [75, 62, 84, 37, 25, 50, 20])
+
 
 if __name__ == "__main__":
     unittest.main()

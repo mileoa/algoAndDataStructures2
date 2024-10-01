@@ -58,7 +58,7 @@ class Heap:
             ):
                 max_value_index: int = left_child_index
             else:
-                max_value_index: int = right_child_index
+                max_value_index = right_child_index
 
             self.HeapArray[current_index], self.HeapArray[max_value_index] = (
                 self.HeapArray[max_value_index],
@@ -66,8 +66,8 @@ class Heap:
             )
 
             current_index = max_value_index
-            left_child_index: int = current_index * 2 + 1
-            right_child_index: int = current_index * 2 + 2
+            left_child_index = current_index * 2 + 1
+            right_child_index = current_index * 2 + 2
 
         return max_element
 
@@ -94,3 +94,89 @@ class Heap:
             parent_index = (current_index - 1) // 2
 
         return True
+
+    def is_valid(self) -> bool:
+        return self._is_valid_subheap(0)
+
+    def _is_valid_subheap(self, node_index: int) -> bool:
+        if self.HeapArray[node_index] is None:
+            return True
+        left_child_index: int = node_index * 2 + 1
+        right_child_index: int = node_index * 2 + 2
+        if left_child_index >= len(self.HeapArray) or right_child_index >= len(
+            self.HeapArray
+        ):
+            return True
+        return (
+            (
+                self.HeapArray[left_child_index] is None
+                or self.HeapArray[left_child_index] <= self.HeapArray[node_index]
+            )
+            and (
+                self.HeapArray[right_child_index] is None
+                or self.HeapArray[right_child_index] <= self.HeapArray[node_index]
+            )
+            and self._is_valid_subheap(left_child_index)
+            and self._is_valid_subheap(right_child_index)
+        )
+
+    def find_max_in_range(self, from_value: int, to_value: int) -> Optional[int]:
+        return self._find_max_in_range_recursive((from_value, to_value), 0)
+
+    def _find_max_in_range_recursive(
+        self, range: tuple[int, int], node_index: int
+    ) -> Optional[int]:
+        if self.HeapArray[node_index] is None:
+            return None
+        if self.HeapArray[node_index] < range[0]:
+            return None
+        if (
+            self.HeapArray[node_index] >= range[0]
+            and self.HeapArray[node_index] <= range[1]
+        ):
+            return self.HeapArray[node_index]
+
+        left_child_index: int = node_index * 2 + 1
+        right_child_index: int = node_index * 2 + 2
+        if left_child_index >= len(self.HeapArray) or right_child_index >= len(
+            self.HeapArray
+        ):
+            return None
+        if (
+            self.HeapArray[left_child_index] is None
+            and self.HeapArray[right_child_index] is None
+        ):
+            return None
+        if self.HeapArray[left_child_index] is None:
+            return self._find_max_in_range_recursive(range, right_child_index)
+        if self.HeapArray[right_child_index] is None:
+            return self._find_max_in_range_recursive(range, left_child_index)
+
+        supposed_values: list[Optional[int]] = [
+            self._find_max_in_range_recursive(range, left_child_index),
+            self._find_max_in_range_recursive(range, right_child_index),
+        ]
+        if supposed_values[0] is None and supposed_values[1] is None:
+            return None
+        if supposed_values[0] is None:
+            return supposed_values[1]
+        if supposed_values[1] is None:
+            return supposed_values[0]
+        return max(supposed_values)
+
+    def add_level(self) -> None:
+        new_depth: int = 0
+        new_size: int = 0
+        while new_size <= len(self.HeapArray):
+            new_depth += 1
+            new_size = 2 ** (new_depth + 1) - 1
+        add_size_amount: int = new_size - len(self.HeapArray)
+        self.HeapArray += [None] * add_size_amount
+
+    def union_from_heap(self, heap) -> None:
+        new_elment: int = heap.GetMax()
+        while new_elment != -1:
+            if not self.Add(new_elment):
+                self.add_level()
+                self.Add(new_elment)
+            new_elment: int = heap.GetMax()
