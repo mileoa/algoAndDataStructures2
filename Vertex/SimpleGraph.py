@@ -22,8 +22,15 @@ class SimpleGraph:
         return None
 
     def RemoveVertex(self, v: int) -> None:
-        # ваш код удаления вершины со всеми её рёбрами
-        pass
+        if v >= self.max_vertex or v < 0:
+            return None
+        self.vertex[v] = None
+        for i, demension in enumerate(self.m_adjacency):
+            if self.m_adjacency[i][v] == 0:
+                continue
+            self.m_adjacency[v][i] = 0
+            self.m_adjacency[i][v] = 0
+        return None
 
     def IsEdge(self, v1: int, v2: int) -> bool:
         if v1 >= self.max_vertex or v2 >= self.max_vertex or v1 < 0 or v2 < 0:

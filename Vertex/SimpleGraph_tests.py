@@ -74,8 +74,10 @@ class SimpleGraphTests(unittest.TestCase):
         graph.AddEdge(1, 2)
         for first_index, first_demension in enumerate(graph.m_adjacency):
             for second_index, relation in enumerate(first_demension):
-                if (first_index == 1 and second_index == 2) or (
-                    first_index == 2 and second_index == 1
+                if (
+                    (first_index == 1 and second_index == 2)
+                    or first_index == 2
+                    and second_index == 1
                 ):
                     self.assertEqual(relation, 1)
                     self.assertEqual(relation, 1)
@@ -107,8 +109,9 @@ class SimpleGraphTests(unittest.TestCase):
 
         for first_index, first_demension in enumerate(graph.m_adjacency):
             for second_index, relation in enumerate(first_demension):
-                if (first_index == 1 and second_index == 2) or (
-                    (first_index == 2 and second_index == 1)
+                if (
+                    (first_index == 1 and second_index == 2)
+                    or (first_index == 2 and second_index == 1)
                     or (first_index == 2 and second_index == 3)
                     or (first_index == 3 and second_index == 2)
                 ):
@@ -120,8 +123,10 @@ class SimpleGraphTests(unittest.TestCase):
         graph.RemoveEdge(1, 2)
         for first_index, first_demension in enumerate(graph.m_adjacency):
             for second_index, relation in enumerate(first_demension):
-                if (first_index == 2 and second_index == 3) or (
-                    first_index == 3 and second_index == 2
+                if (
+                    (first_index == 2 and second_index == 3)
+                    or first_index == 3
+                    and second_index == 2
                 ):
                     self.assertEqual(relation, 1)
                     self.assertEqual(relation, 1)
@@ -141,8 +146,9 @@ class SimpleGraphTests(unittest.TestCase):
             graph.RemoveEdge(0, 4)
             for first_index, first_demension in enumerate(graph.m_adjacency):
                 for second_index, relation in enumerate(first_demension):
-                    if (first_index == 1 and second_index == 2) or (
-                        (first_index == 2 and second_index == 1)
+                    if (
+                        (first_index == 1 and second_index == 2)
+                        or (first_index == 2 and second_index == 1)
                         or (first_index == 2 and second_index == 3)
                         or (first_index == 3 and second_index == 2)
                     ):
@@ -165,16 +171,34 @@ class SimpleGraphTests(unittest.TestCase):
 
         for first_index, first_demension in enumerate(graph.m_adjacency):
             for second_index, relation in enumerate(first_demension):
-                if (first_index == 1 and second_index == 2) or (
-                    (first_index == 2 and second_index == 1)
+                if (
+                    (first_index == 1 and second_index == 2)
+                    or (first_index == 2 and second_index == 1)
                     or (first_index == 2 and second_index == 3)
                     or (first_index == 3 and second_index == 2)
                 ):
                     self.assertTrue(graph.IsEdge(first_index, second_index))
-                    self.assertTrue(graph.IsEdge(second_index, first_index))
                     continue
                 self.assertFalse(graph.IsEdge(first_index, second_index))
-                self.assertFalse(graph.IsEdge(second_index, first_index))
+
+    def test_regression_RemoveVertex(self):
+        graph: SimpleGraph = SimpleGraph(4)
+        graph.AddVertex(0)
+        graph.AddVertex(10)
+        graph.AddVertex(20)
+        graph.AddVertex(30)
+
+        graph.AddEdge(1, 2)
+        graph.AddEdge(2, 3)
+
+        graph.RemoveVertex(2)
+        self.assertEqual(graph.vertex[0].Value, 0)
+        self.assertEqual(graph.vertex[1].Value, 10)
+        self.assertIsNone(graph.vertex[2])
+        self.assertEqual(graph.vertex[3].Value, 30)
+        for first_index, first_demension in enumerate(graph.m_adjacency):
+            for second_index, relation in enumerate(first_demension):
+                self.assertEqual(relation, 0)
 
 
 if __name__ == "__main__":
