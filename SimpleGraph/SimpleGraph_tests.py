@@ -133,29 +133,29 @@ class SimpleGraphTests(unittest.TestCase):
                     continue
                 self.assertEqual(relation, 0)
 
-        def test_border_RemoveEdge(self):
-            graph: SimpleGraph = SimpleGraph(4)
-            graph.AddVertex(0)
-            graph.AddVertex(10)
-            graph.AddVertex(20)
-            graph.AddVertex(30)
+    def test_border_RemoveEdge(self):
+        graph: SimpleGraph = SimpleGraph(4)
+        graph.AddVertex(0)
+        graph.AddVertex(10)
+        graph.AddVertex(20)
+        graph.AddVertex(30)
 
-            graph.AddEdge(1, 2)
-            graph.AddEdge(2, 3)
+        graph.AddEdge(1, 2)
+        graph.AddEdge(2, 3)
 
-            graph.RemoveEdge(0, 4)
-            for first_index, first_demension in enumerate(graph.m_adjacency):
-                for second_index, relation in enumerate(first_demension):
-                    if (
-                        (first_index == 1 and second_index == 2)
-                        or (first_index == 2 and second_index == 1)
-                        or (first_index == 2 and second_index == 3)
-                        or (first_index == 3 and second_index == 2)
-                    ):
-                        self.assertEqual(relation, 1)
-                        self.assertEqual(relation, 1)
-                        continue
-                    self.assertEqual(relation, 0)
+        graph.RemoveEdge(0, 4)
+        for first_index, first_demension in enumerate(graph.m_adjacency):
+            for second_index, relation in enumerate(first_demension):
+                if (
+                    (first_index == 1 and second_index == 2)
+                    or (first_index == 2 and second_index == 1)
+                    or (first_index == 2 and second_index == 3)
+                    or (first_index == 3 and second_index == 2)
+                ):
+                    self.assertEqual(relation, 1)
+                    self.assertEqual(relation, 1)
+                    continue
+                self.assertEqual(relation, 0)
 
     def test_regression_IsEdge(self):
         graph: SimpleGraph = SimpleGraph(4)
