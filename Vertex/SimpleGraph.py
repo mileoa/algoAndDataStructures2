@@ -35,5 +35,10 @@ class SimpleGraph:
         return None
 
     def RemoveEdge(self, v1, v2):
-        # удаление ребра между вершинами v1 и v2
-        pass
+        if v1 >= self.max_vertex or v2 >= self.max_vertex or v1 < 0 or v2 < 0:
+            return None
+        if self.vertex[v1] is None or self.vertex[v2] is None:
+            return None
+        self.m_adjacency[v1][v2] = 0
+        self.m_adjacency[v2][v1] = 0
+        return None
