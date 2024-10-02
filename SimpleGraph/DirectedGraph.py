@@ -10,12 +10,7 @@ class DirectedGraph(SimpleGraph):
         if v >= self.max_vertex or v < 0:
             return None
         for i, demension in enumerate(self.m_adjacency):
-            if demension[v] == 0:
-                continue
             self.RemoveEdge(i, v)
-        for i, relation in enumerate(self.m_adjacency[v]):
-            if relation == 0:
-                continue
             self.RemoveEdge(v, i)
         # Must set to None after deleting edges because
         # RemoveEdge checks if node on given index is None.
@@ -42,3 +37,32 @@ class DirectedGraph(SimpleGraph):
             return None
         self.m_adjacency[v1][v2] = 0
         return None
+
+    def is_cyclic(self) -> bool:
+        is_cyclic_graph: bool = False
+        for v, element in enumerate(self.vertex):
+            if element is None:
+                continue
+            is_cyclic_graph = is_cyclic_graph or self._is_cyclic_recursive(v, [])
+            if is_cyclic_graph:
+                break
+        return is_cyclic_graph
+
+    def _is_cyclic_recursive(self, v, visited_v: list[int]) -> bool:
+        if v in visited_v:
+            return True
+        v_to_visit: list[int] = []
+        for i, relation in enumerate(self.m_adjacency[v]):
+            if relation == 0:
+                continue
+            v_to_visit.append(i)
+
+        is_cyclic_graph: bool = False
+        for i in v_to_visit:
+            is_cyclic_graph = is_cyclic_graph or self._is_cyclic_recursive(
+                i, visited_v + [v]
+            )
+            if is_cyclic_graph:
+                break
+
+        return is_cyclic_graph

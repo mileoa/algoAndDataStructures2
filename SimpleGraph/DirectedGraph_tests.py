@@ -153,6 +153,27 @@ class DirectedGraphTests(unittest.TestCase):
                     continue
                 self.assertEqual(relation, 0)
 
+    def test_regression_is_cyclic(self):
+        graph: DirectedGraph = DirectedGraph(4)
+        graph.AddVertex(0)
+        graph.AddVertex(10)
+        graph.AddVertex(20)
+        graph.AddVertex(30)
+
+        graph.AddEdge(1, 3)
+        graph.AddEdge(2, 1)
+        self.assertFalse(graph.is_cyclic())
+
+        graph.AddEdge(0, 0)
+        self.assertTrue(graph.is_cyclic())
+
+        graph.RemoveEdge(0, 0)
+        graph.AddEdge(2, 3)
+
+        self.assertFalse(graph.is_cyclic())
+        graph.AddEdge(3, 2)
+        self.assertTrue(graph.is_cyclic())
+
 
 if __name__ == "__main__":
     unittest.main()
