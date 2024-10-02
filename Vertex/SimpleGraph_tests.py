@@ -151,6 +151,31 @@ class SimpleGraphTests(unittest.TestCase):
                         continue
                     self.assertEqual(relation, 0)
 
+    def test_regression_IsEdge(self):
+        graph: SimpleGraph = SimpleGraph(4)
+        graph.AddVertex(0)
+        graph.AddVertex(10)
+        graph.AddVertex(20)
+        graph.AddVertex(30)
+
+        graph.AddEdge(1, 2)
+        graph.AddEdge(2, 3)
+
+        self.assertFalse(graph.IsEdge(1, 5))
+
+        for first_index, first_demension in enumerate(graph.m_adjacency):
+            for second_index, relation in enumerate(first_demension):
+                if (first_index == 1 and second_index == 2) or (
+                    (first_index == 2 and second_index == 1)
+                    or (first_index == 2 and second_index == 3)
+                    or (first_index == 3 and second_index == 2)
+                ):
+                    self.assertTrue(graph.IsEdge(first_index, second_index))
+                    self.assertTrue(graph.IsEdge(second_index, first_index))
+                    continue
+                self.assertFalse(graph.IsEdge(first_index, second_index))
+                self.assertFalse(graph.IsEdge(second_index, first_index))
+
 
 if __name__ == "__main__":
     unittest.main()

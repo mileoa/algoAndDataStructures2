@@ -21,9 +21,10 @@ class SimpleGraph:
         # ваш код удаления вершины со всеми её рёбрами
         pass
 
-    def IsEdge(self, v1, v2):
-        # True если есть ребро между вершинами v1 и v2
-        return False
+    def IsEdge(self, v1: int, v2: int) -> bool:
+        if v1 >= self.max_vertex or v2 >= self.max_vertex or v1 < 0 or v2 < 0:
+            return False
+        return self.m_adjacency[v1][v2] == 1 and self.m_adjacency[v2][v1] == 1
 
     def AddEdge(self, v1: int, v2: int) -> None:
         if v1 >= self.max_vertex or v2 >= self.max_vertex or v1 < 0 or v2 < 0:
