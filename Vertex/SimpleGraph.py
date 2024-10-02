@@ -24,12 +24,13 @@ class SimpleGraph:
     def RemoveVertex(self, v: int) -> None:
         if v >= self.max_vertex or v < 0:
             return None
-        self.vertex[v] = None
         for i, demension in enumerate(self.m_adjacency):
             if self.m_adjacency[i][v] == 0:
                 continue
-            self.m_adjacency[v][i] = 0
-            self.m_adjacency[i][v] = 0
+            self.RemoveEdge(i, v)
+        # Must set to None after deleting edges because
+        # RemoveEdge checks if node on given index is None.
+        self.vertex[v] = None
         return None
 
     def IsEdge(self, v1: int, v2: int) -> bool:
