@@ -58,5 +58,4 @@ class DirectedGraph(SimpleGraph):
         for i in v_to_visit:
             if self._is_cyclic_recursive(i, visited_v + [v]):
                 return True
-
         return False
