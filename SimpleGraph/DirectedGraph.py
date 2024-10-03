@@ -39,16 +39,14 @@ class DirectedGraph(SimpleGraph):
         return None
 
     def is_cyclic(self) -> bool:
-        is_cyclic_graph: bool = False
         for v, element in enumerate(self.vertex):
             if element is None:
                 continue
-            is_cyclic_graph = is_cyclic_graph or self._is_cyclic_recursive(v, [])
-            if is_cyclic_graph:
-                break
-        return is_cyclic_graph
+            if self._is_cyclic_recursive(v, []):
+                return True
+        return False
 
-    def _is_cyclic_recursive(self, v, visited_v: list[int]) -> bool:
+    def _is_cyclic_recursive(self, v: int, visited_v: list[int]) -> bool:
         if v in visited_v:
             return True
         v_to_visit: list[int] = []
@@ -57,12 +55,8 @@ class DirectedGraph(SimpleGraph):
                 continue
             v_to_visit.append(i)
 
-        is_cyclic_graph: bool = False
         for i in v_to_visit:
-            is_cyclic_graph = is_cyclic_graph or self._is_cyclic_recursive(
-                i, visited_v + [v]
-            )
-            if is_cyclic_graph:
-                break
+            if self._is_cyclic_recursive(i, visited_v + [v]):
+                return True
 
-        return is_cyclic_graph
+        return False
