@@ -92,7 +92,7 @@ class SimpleTree:
         edges_to_delete: list[SimpleTreeNode] = []
         for child in node.Children:
             if len(self.GetAllNodesRecursive(child)) % 2 == 0:
-                edges_to_delete.extend([node.NodeValue])
-                edges_to_delete.extend([child.NodeValue])
+                edges_to_delete.extend([node])
+                edges_to_delete.extend([child])
             edges_to_delete.extend(self.EvenTree_recursive(child))
         return edges_to_delete
