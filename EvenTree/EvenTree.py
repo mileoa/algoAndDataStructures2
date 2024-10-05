@@ -83,13 +83,13 @@ class SimpleTree:
             ]
         )
 
-    def EvenTrees(self) -> list[int]:
+    def EvenTrees(self) -> list[SimpleTreeNode]:
         if self.Root is None:
             return []
         return self.EvenTree_recursive(self.Root)
 
-    def EvenTree_recursive(self, node: SimpleTreeNode) -> list[int]:
-        edges_to_delete: list[int] = []
+    def EvenTree_recursive(self, node: SimpleTreeNode) -> list[SimpleTreeNode]:
+        edges_to_delete: list[SimpleTreeNode] = []
         for child in node.Children:
             if len(self.GetAllNodesRecursive(child)) % 2 == 0:
                 edges_to_delete.extend([node.NodeValue])
