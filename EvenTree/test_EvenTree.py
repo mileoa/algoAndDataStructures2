@@ -20,7 +20,7 @@ class SimpleTreeTests(unittest.TestCase):
         tree.AddChild(tree.Root.Children[2].Children[0], SimpleTreeNode(9, None))
         tree.AddChild(tree.Root.Children[2].Children[0], SimpleTreeNode(10, None))
 
-        self.assertEqual(tree.EvenTrees(), [1, 3, 1, 6])
+        self.assertEqual([node.NodeValue for node in tree.EvenTrees()], [1, 3, 1, 6])
 
 
 if __name__ == "__main__":
