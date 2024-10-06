@@ -96,3 +96,28 @@ class SimpleTree:
                 edges_to_delete.extend([child])
             edges_to_delete.extend(self.EvenTree_recursive(child))
         return edges_to_delete
+
+    def count_even_subtrees(self) -> int:
+        if self.Root is None:
+            return 0
+        even_subtrees_amount: int = 0
+        for subtree_root, node_amount in self.get_nodes_amount_for_every_subtree(
+            self.Root, {}
+        ).items():
+            if node_amount % 2 == 0 and node_amount != 0:
+                even_subtrees_amount += 1
+        return even_subtrees_amount
+
+    def get_nodes_amount_for_every_subtree(
+        self,
+        subtree_root: SimpleTreeNode,
+        subtrees_node_amount: list[SimpleTreeNode, int],
+    ) -> list[SimpleTreeNode, int]:
+        subtrees_node_amount[subtree_root] = 1
+        for child in subtree_root.Children:
+            subtrees_node_amount[
+                subtree_root
+            ] += self.get_nodes_amount_for_every_subtree(child, subtrees_node_amount)[
+                child
+            ]
+        return subtrees_node_amount
