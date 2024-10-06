@@ -97,6 +97,9 @@ class SimpleTree:
             edges_to_delete.extend(self.EvenTree_recursive(child))
         return edges_to_delete
 
+    def balance(self) -> None:
+        return None
+
     def count_even_subtrees(self) -> int:
         if self.Root is None:
             return 0
@@ -111,8 +114,8 @@ class SimpleTree:
     def get_nodes_amount_for_every_subtree(
         self,
         subtree_root: SimpleTreeNode,
-        subtrees_node_amount: list[SimpleTreeNode, int],
-    ) -> list[SimpleTreeNode, int]:
+        subtrees_node_amount: dict[SimpleTreeNode, int],
+    ) -> dict[SimpleTreeNode, int]:
         subtrees_node_amount[subtree_root] = 1
         for child in subtree_root.Children:
             subtrees_node_amount[
