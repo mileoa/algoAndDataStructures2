@@ -4,7 +4,7 @@ import random
 from EvenTree import SimpleTree, SimpleTreeNode
 
 
-class SimpleTreeTests(unittest.TestCase):
+class EvenTreeTests(unittest.TestCase):
     def setUp(self) -> None:
         self.tree = SimpleTree(SimpleTreeNode(1, None))
         self.tree.AddChild(self.tree.Root, SimpleTreeNode(2, None))
@@ -31,6 +31,25 @@ class SimpleTreeTests(unittest.TestCase):
 
     def test_regression_count_even_subtrees(self):
         self.assertEqual(self.tree.count_even_subtrees(), 3)
+
+    def test_binary_even(self):
+        self.tree.DeleteNode(self.tree.Root.Children[1])
+        self.tree.balance_binary_even()
+
+        self.assertEqual(self.tree.Root.NodeValue, 7)
+        self.assertEqual(self.tree.Root.Children[0].NodeValue, 5)
+        self.assertEqual(self.tree.Root.Children[1].NodeValue, 9)
+        self.assertEqual(self.tree.Root.Children[0].Children[0].NodeValue, 2)
+        self.assertEqual(self.tree.Root.Children[0].Children[1].NodeValue, 6)
+        self.assertEqual(
+            self.tree.Root.Children[0].Children[0].Children[0].NodeValue, 1
+        )
+        self.assertEqual(self.tree.Root.Children[0].Children[1].Children, [])
+        self.assertEqual(self.tree.Root.Children[1].Children[0].NodeValue, 8)
+        self.assertEqual(self.tree.Root.Children[1].Children[0].Children, [])
+        self.assertEqual(self.tree.Root.Children[1].Children[1].NodeValue, 10)
+        self.assertEqual(self.tree.Root.Children[1].Children[1].Children, [])
+        self.assertEqual(len(self.tree.Root.Children[0].Children[0].Children), 1)
 
 
 if __name__ == "__main__":
