@@ -100,7 +100,7 @@ class SimpleTree:
     def balance_binary_even(self) -> None:
         nodes_sorted: list[SimpleTreeNode] = self.GetAllNodes()
         if len(nodes_sorted) == 0:
-            return 0
+            return None
         nodes_sorted.sort(key=lambda node: node.NodeValue)
         for node in nodes_sorted:
             node.Parent = None
@@ -110,12 +110,12 @@ class SimpleTree:
 
     def _balance_binary_even_recursive(
         self, nodes_sorted: list[SimpleTreeNode]
-    ) -> SimpleTreeNode:
+    ) -> Optional[SimpleTreeNode]:
         if len(nodes_sorted) == 0:
             return None
         central_element_index: int = len(nodes_sorted) // 2
-        left_side: list[int] = nodes_sorted[:central_element_index]
-        right_side: list[int] = nodes_sorted[central_element_index + 1 :]
+        left_side: list[SimpleTreeNode] = nodes_sorted[:central_element_index]
+        right_side: list[SimpleTreeNode] = nodes_sorted[central_element_index + 1 :]
         left_child: Optional[SimpleTreeNode] = self._balance_binary_even_recursive(
             left_side
         )
