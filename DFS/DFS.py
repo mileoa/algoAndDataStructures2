@@ -98,6 +98,4 @@ class SimpleGraph:
         self, first_vertex: int, second_vertex: int
     ) -> tuple[bool, list[Vertex]]:
         path: list[Vertex] = self.DepthFirstSearch(first_vertex, second_vertex)
-        if path == []:
-            return (False, [])
-        return (True, path)
+        return (bool(path), path)
