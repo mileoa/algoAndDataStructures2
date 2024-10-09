@@ -59,10 +59,10 @@ class DFSTests(unittest.TestCase):
         self.assertTrue(self.tree.is_connected_graph())
 
     def test_is_vertexes_connected(self):
-        self.assertEqual(self.tree.is_vertexes_connected(0, 1), [False, []])
+        self.assertEqual(self.tree.is_vertexes_connected(0, 1), (False, []))
         self.assertEqual(
-            [vertex.Value for vertex in self.tree.is_vertexes_connected(1, 3)[1]],
-            [1, 2, 3],
+            tuple(vertex.Value for vertex in self.tree.is_vertexes_connected(1, 3)[1]),
+            (1, 2, 3),
         )
         self.assertTrue(self.tree.is_vertexes_connected(1, 3)[0])
 

@@ -96,8 +96,8 @@ class SimpleGraph:
 
     def is_vertexes_connected(
         self, first_vertex: int, second_vertex: int
-    ) -> list[bool, list[Vertex]]:
+    ) -> tuple[bool, list[Vertex]]:
         path: list[Vertex] = self.DepthFirstSearch(first_vertex, second_vertex)
         if path == []:
-            return [False, []]
-        return [True, path]
+            return (False, [])
+        return (True, path)
