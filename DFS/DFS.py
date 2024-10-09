@@ -81,3 +81,23 @@ class SimpleGraph:
         return self._DepthFirstSearch_recursive(
             self.vertex.index(path_stack[-1]), VTo, path_stack
         )
+
+    def is_connected_graph(self) -> bool:
+        for i, first_node in enumerate(self.vertex):
+            if first_node is None:
+                continue
+            for j, second_node in enumerate(self.vertex):
+                if second_node is None or first_node == second_node:
+                    continue
+                if self.DepthFirstSearch(i, j) == []:
+                    return False
+            return True
+        return True
+
+    def is_vertexes_connected(
+        self, first_vertex: int, second_vertex: int
+    ) -> list[bool, list[Vertex]]:
+        path: list[Vertex] = self.DepthFirstSearch(first_vertex, second_vertex)
+        if path == []:
+            return [False, []]
+        return [True, path]
