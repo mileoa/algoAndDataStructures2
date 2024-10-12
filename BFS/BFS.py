@@ -1,4 +1,5 @@
-from typing import Optional
+from typing import Optional, List
+from collections import deque
 
 
 class Vertex:
@@ -12,8 +13,8 @@ class SimpleGraph:
 
     def __init__(self, size: int) -> None:
         self.max_vertex: int = size
-        self.m_adjacency: list[list[int]] = [[0] * size for _ in range(size)]
-        self.vertex: list[Optional[Vertex]] = [None] * size
+        self.m_adjacency: List[List[int]] = [[0] * size for _ in range(size)]
+        self.vertex: List[Optional[Vertex]] = [None] * size
 
     def AddVertex(self, v: int) -> None:
         if self.vertex.count(None) == 0:
@@ -57,40 +58,18 @@ class SimpleGraph:
         self.m_adjacency[v2][v1] = 0
         return None
 
-    def DepthFirstSearch(self, VFrom: int, VTo: int) -> list[Vertex]:
-        self.unhit_all_vertexes()
-        return self._DepthFirstSearch_recursive(VFrom, VTo, [])
-
-    def _DepthFirstSearch_recursive(
-        self, VFrom: int, VTo: int, path_stack: list[Vertex]
-    ) -> list[Vertex]:
-        if not self.vertex[VFrom].hit:
-            path_stack.append(self.vertex[VFrom])
-        self.vertex[VFrom].hit = True
-        for i, relation in enumerate(self.m_adjacency[VFrom]):
-            if relation == 1 and i == VTo:
-                return path_stack + [self.vertex[VTo]]
-            if relation == 1 and not self.vertex[i].hit:
-                return self._DepthFirstSearch_recursive(i, VTo, path_stack)
-        path_stack.pop()
-        if len(path_stack) == 0:
-            return []
-        return self._DepthFirstSearch_recursive(
-            self.vertex.index(path_stack[-1]), VTo, path_stack
-        )
-
-    def BreadthFirstSearch(self, VFrom: int, VTo: int) -> list[Vertex]:
+    def BreadthFirstSearch(self, VFrom: int, VTo: int) -> List[Vertex]:
         self.unhit_all_vertexes()
         return self._BreadthFirstSearch_recursive(
-            VFrom, VTo, [[VFrom, [self.vertex[VFrom]]]]
+            VFrom, VTo, deque([[VFrom, [self.vertex[VFrom]]]])
         )
 
     def _BreadthFirstSearch_recursive(
-        self, VFrom: int, VTo: int, queue: list[int, list[Vertex]]
-    ) -> list[Vertex]:
+        self, VFrom: int, VTo: int, queue: deque
+    ) -> List[Vertex]:
         current_vertex_index: int
-        current_path: list[Vertex]
-        current_vertex_index, current_path = queue.pop(0)
+        current_path: List[Vertex]
+        current_vertex_index, current_path = queue.popleft()
         self.vertex[VFrom].hit = True
 
         for i, relation in enumerate(self.m_adjacency[current_vertex_index]):
@@ -112,24 +91,24 @@ class SimpleGraph:
         if self.vertex.count(None) == len(self.vertex):
             return 0
 
-        path_lenghts: list[int] = []
+        path_lenghts: List[int] = []
         for v_index, v in enumerate(self.vertex):
             if v is None:
                 continue
             self.unhit_all_vertexes()
             path_lenghts.append(
                 self.find_farthest_vertexes_path_len_from_node_recursive(
-                    v_index, [[v, 0]], 0
+                    v_index, deque([[v, 0]]), 0
                 )
             )
         return max(path_lenghts)
 
     def find_farthest_vertexes_path_len_from_node_recursive(
-        self, start_index: int, queue: list[Vertex, list[int]], max_distance: int
+        self, start_index: int, queue: deque, max_distance: int
     ) -> int:
         current_node: Vertex
         current_distance: int
-        current_node, current_distance = queue.pop(0)
+        current_node, current_distance = queue.popleft()
         current_node.hit = True
 
         max_distance = max(current_distance, max_distance)
@@ -143,24 +122,24 @@ class SimpleGraph:
             start_index, queue, max_distance
         )
 
-    def find_all_cycles(self) -> list[list[int]]:
+    def find_all_cycles(self) -> List[List[int]]:
         if self.vertex.count(None) == len(self.vertex):
             return []
-        all_cycles: list[list[int]] = []
+        all_cycles: List[List[int]] = []
         for i, node in enumerate(self.vertex):
             if node is None:
                 continue
             all_cycles.extend(
-                self.find_all_cycles_from_node_recursive(i, [[node, [i]]], [])
+                self.find_all_cycles_from_node_recursive(i, deque([[node, [i]]]), [])
             )
-        return filter(lambda cycle: cycle != [], all_cycles)
+        return list(filter(lambda cycle: cycle != [], all_cycles))
 
     def find_all_cycles_from_node_recursive(
-        self, start_index: int, queue: list[Vertex, list[int]], cycle: list[int]
-    ) -> list[int]:
+        self, start_index: int, queue: deque, cycle: List[List[int]]
+    ) -> List[List[int]]:
         current_node: Vertex
-        current_path: list[int]
-        current_node, current_path = queue.pop(0)
+        current_path: List[int]
+        current_node, current_path = queue.popleft()
         for i, relation in enumerate(self.m_adjacency[self.vertex.index(current_node)]):
             if relation == 1 and i == start_index and len(current_path) > 2:
                 cycle.append(current_path + [start_index])
