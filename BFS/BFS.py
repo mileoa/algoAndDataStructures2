@@ -132,9 +132,9 @@ class SimpleGraph:
             v.hit = False
         max_distance: int = 0
         queue: list[list[Vertex, int]] = [[self.vertex[node_index], 0]]
-        current_node: Vertex
-        current_distance: int
         while queue:
+            current_node: Vertex
+            current_distance: int
             current_node, current_distance = queue.pop(0)
             current_node.hit = True
 
@@ -147,3 +147,33 @@ class SimpleGraph:
                     queue.append([self.vertex[i], current_distance + 1])
 
         return max_distance
+
+    def find_all_cycles(self) -> list[list[int]]:
+        if self.vertex.count(None) == len(self.vertex):
+            return []
+        all_cycles: list[list[int]] = []
+        for i, node in enumerate(self.vertex):
+            if node is None:
+                continue
+            all_cycles.extend(self.find_all_cycles_starting_with_node(i))
+        return filter(lambda cycle: cycle != [], all_cycles)
+
+    def find_all_cycles_starting_with_node(self, node_index: int) -> list[int]:
+        queue: list[Vertex, list[int]] = [[self.vertex[node_index], [node_index]]]
+        cycles: list[int] = []
+
+        while queue:
+            current_node: Vertex
+            current_path: list[int]
+            current_node, current_path = queue.pop(0)
+
+            for i, relation in enumerate(
+                self.m_adjacency[self.vertex.index(current_node)]
+            ):
+                if relation == 1 and i == node_index and len(current_path) > 2:
+                    cycles.append(current_path + [node_index])
+                    continue
+                if relation == 1 and i not in current_path:
+                    queue.append([self.vertex[i], current_path + [i]])
+
+        return cycles

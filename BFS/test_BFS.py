@@ -53,6 +53,47 @@ class BFSTests(unittest.TestCase):
         self.tree.RemoveEdge(7, 6)
         self.assertEqual(self.tree.find_farthest_vertexes_path_len(), 4)
 
+    def test_find_all_cycles(self):
+        tree = SimpleGraph(6)
+        tree.AddVertex(0)
+        tree.AddVertex(1)
+        tree.AddVertex(2)
+        tree.AddVertex(3)
+        tree.AddVertex(4)
+        tree.AddVertex(5)
+        tree.AddEdge(0, 1)
+        tree.AddEdge(1, 3)
+        tree.AddEdge(1, 2)
+        tree.AddEdge(1, 4)
+        tree.AddEdge(3, 2)
+        tree.AddEdge(4, 2)
+        tree.AddEdge(2, 5)
+        self.assertCountEqual(
+            tree.find_all_cycles(),
+            [
+                [1, 3, 2, 4, 1],
+                [1, 4, 2, 3, 1],
+                [1, 3, 2, 1],
+                [1, 2, 3, 1],
+                [1, 4, 2, 1],
+                [1, 2, 4, 1],
+                [3, 2, 4, 1, 3],
+                [3, 1, 4, 2, 3],
+                [3, 2, 1, 3],
+                [3, 1, 2, 3],
+                [2, 4, 1, 3, 2],
+                [2, 3, 1, 4, 2],
+                [2, 1, 4, 2],
+                [2, 4, 1, 2],
+                [2, 1, 3, 2],
+                [2, 3, 1, 2],
+                [4, 1, 3, 2, 4],
+                [4, 2, 3, 1, 4],
+                [4, 1, 2, 4],
+                [4, 2, 1, 4],
+            ],
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
