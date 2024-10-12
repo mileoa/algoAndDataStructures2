@@ -46,6 +46,13 @@ class BFSTests(unittest.TestCase):
             [1, 2, 3, 7],
         )
 
+    def test_find_two_most_distant_vertexes(self):
+        self.assertEqual(self.tree.find_farthest_vertexes_path_len(), 4)
+        self.tree.RemoveEdge(2, 3)
+        self.tree.RemoveEdge(2, 5)
+        self.tree.RemoveEdge(7, 6)
+        self.assertEqual(self.tree.find_farthest_vertexes_path_len(), 4)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -115,3 +115,35 @@ class SimpleGraph:
         return self._BreadthFirstSearch_recursive(
             self.vertex.index(next_vertex), VTo, queue, next_path
         )
+
+    def find_farthest_vertexes_path_len(self) -> int:
+        if self.vertex.count(None) == len(self.vertex):
+            return 0
+        return max(
+            self.find_farthest_vertex_path_len_from_node(v_index)
+            for v_index, v in enumerate(self.vertex)
+            if v is not None
+        )
+
+    def find_farthest_vertex_path_len_from_node(self, node_index: int) -> int:
+        for v in self.vertex:
+            if v is None:
+                continue
+            v.hit = False
+        max_distance: int = 0
+        queue: list[list[Vertex, int]] = [[self.vertex[node_index], 0]]
+        current_node: Vertex
+        current_distance: int
+        while queue:
+            current_node, current_distance = queue.pop(0)
+            current_node.hit = True
+
+            max_distance = max(current_distance, max_distance)
+
+            for i, relation in enumerate(
+                self.m_adjacency[self.vertex.index(current_node)]
+            ):
+                if relation == 1 and not self.vertex[i].hit:
+                    queue.append([self.vertex[i], current_distance + 1])
+
+        return max_distance
