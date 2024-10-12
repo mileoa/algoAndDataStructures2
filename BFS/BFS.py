@@ -81,34 +81,32 @@ class SimpleGraph:
 
     def BreadthFirstSearch(self, VFrom: int, VTo: int) -> list[Vertex]:
         self.unhit_all_vertexes()
-        return self._BreadthFirstSearch_recursive(VFrom, VTo, [], [self.vertex[VFrom]])
+        return self._BreadthFirstSearch_recursive(
+            VFrom, VTo, [[VFrom, [self.vertex[VFrom]]]]
+        )
 
     def _BreadthFirstSearch_recursive(
-        self,
-        VFrom: int,
-        VTo: int,
-        queue: list[Vertex, list[Vertex]],
-        current_path: list[Vertex],
+        self, VFrom: int, VTo: int, queue: list[int, list[Vertex]]
     ) -> list[Vertex]:
+        current_vertex_index: int
+        current_path: list[Vertex]
+        current_vertex_index, current_path = queue.pop(0)
         self.vertex[VFrom].hit = True
-        for i, relation in enumerate(self.m_adjacency[VFrom]):
+
+        for i, relation in enumerate(self.m_adjacency[current_vertex_index]):
             if relation == 1 and i == VTo:
                 return current_path + [self.vertex[VTo]]
             if relation == 1 and not self.vertex[i].hit:
                 queue.append(
                     [
-                        self.vertex[i],
+                        i,
                         current_path + [self.vertex[i]],
                     ]
                 )
         if len(queue) == 0:
             return []
-        next_vertex: Vertex
-        next_path: list[Vertex]
-        next_vertex, next_path = queue.pop(0)
-        return self._BreadthFirstSearch_recursive(
-            self.vertex.index(next_vertex), VTo, queue, next_path
-        )
+
+        return self._BreadthFirstSearch_recursive(current_vertex_index, VTo, queue)
 
     def find_farthest_vertexes_path_len(self) -> int:
         if self.vertex.count(None) == len(self.vertex):
