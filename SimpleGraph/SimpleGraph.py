@@ -11,8 +11,8 @@ class SimpleGraph:
 
     def __init__(self, size: int) -> None:
         self.max_vertex: int = size
-        self.m_adjacency: list[list[int]] = [[0] * size for _ in range(size)]
-        self.vertex: list[Optional[Vertex]] = [None] * size
+        self.m_adjacency: List[List[int]] = [[0] * size for _ in range(size)]
+        self.vertex: List[Optional[Vertex]] = [None] * size
 
     def AddVertex(self, v: int) -> None:
         if self.vertex.count(None) == 0:
