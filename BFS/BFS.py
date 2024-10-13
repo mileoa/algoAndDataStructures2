@@ -90,23 +90,24 @@ class SimpleGraph:
     def find_farthest_vertexes_path_len(self) -> int:
         if self.vertex.count(None) == len(self.vertex):
             return 0
+        first_not_none_vertex_occurance: int = -1
+        for i, v in enumerate(self.vertex):
+            if v is not None:
+                first_not_none_vertex_occurance = i
+                break
+        first_farthest_vertex_index: int = self.vertex.index(
+            self.find_farthest_vertex_from_given(first_not_none_vertex_occurance)[-1]
+        )
+        return (
+            len(self.find_farthest_vertex_from_given(first_farthest_vertex_index)) - 1
+        )
 
-        max_path_len: int = 0
-        for v_index, v in enumerate(self.vertex):
-            if v is None:
-                continue
-            farthest_vertex_path_len: int = (
-                len(self.find_farthest_vertex_from_given(v_index)) - 1
-            )
-            max_path_len = max(max_path_len, farthest_vertex_path_len)
-        return max_path_len
-
-    def find_farthest_vertex_from_given(self, given_index: int) -> List[Vertex]:
+    def find_farthest_vertex_from_given(self, vertex_index: int) -> List[Vertex]:
         path_to_farthest_vertex: List[Vertex] = []
         for i, v in enumerate(self.vertex):
             if v is None:
                 continue
-            path_to_v: List[Vertex] = self.BreadthFirstSearch(given_index, i)
+            path_to_v: List[Vertex] = self.BreadthFirstSearch(vertex_index, i)
             if len(path_to_v) > len(path_to_farthest_vertex):
                 path_to_farthest_vertex = path_to_v
         return path_to_farthest_vertex

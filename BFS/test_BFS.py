@@ -47,11 +47,11 @@ class BFSTests(unittest.TestCase):
         )
 
     def test_find_two_most_distant_vertexes(self):
+        self.tree.RemoveVertex(0)
         self.assertEqual(self.tree.find_farthest_vertexes_path_len(), 3)
-        self.tree.RemoveEdge(2, 3)
         self.tree.RemoveEdge(2, 5)
         self.tree.RemoveEdge(7, 6)
-        self.assertEqual(self.tree.find_farthest_vertexes_path_len(), 4)
+        self.assertEqual(self.tree.find_farthest_vertexes_path_len(), 5)
 
     def test_find_all_cycles(self):
         tree = SimpleGraph(6)
