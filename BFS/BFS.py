@@ -91,36 +91,25 @@ class SimpleGraph:
         if self.vertex.count(None) == len(self.vertex):
             return 0
 
-        path_lenghts: List[int] = []
+        max_path_len: int = 0
         for v_index, v in enumerate(self.vertex):
             if v is None:
                 continue
-            self.unhit_all_vertexes()
-            path_lenghts.append(
-                self.find_farthest_vertexes_path_len_from_node_recursive(
-                    v_index, deque([[v, 0]]), 0
-                )
+            farthest_vertex_path_len: int = (
+                len(self.find_farthest_vertex_from_given(v_index)) - 1
             )
-        return max(path_lenghts)
+            max_path_len = max(max_path_len, farthest_vertex_path_len)
+        return max_path_len
 
-    def find_farthest_vertexes_path_len_from_node_recursive(
-        self, start_index: int, queue: deque, max_distance: int
-    ) -> int:
-        current_node: Vertex
-        current_distance: int
-        current_node, current_distance = queue.popleft()
-        current_node.hit = True
-
-        max_distance = max(current_distance, max_distance)
-        for i, relation in enumerate(self.m_adjacency[self.vertex.index(current_node)]):
-            if relation == 1 and not self.vertex[i].hit:
-                queue.append([self.vertex[i], current_distance + 1])
-
-        if len(queue) == 0:
-            return max_distance
-        return self.find_farthest_vertexes_path_len_from_node_recursive(
-            start_index, queue, max_distance
-        )
+    def find_farthest_vertex_from_given(self, given_index: int) -> List[Vertex]:
+        path_to_farthest_vertex: List[Vertex] = []
+        for i, v in enumerate(self.vertex):
+            if v is None:
+                continue
+            path_to_v: List[Vertex] = self.BreadthFirstSearch(given_index, i)
+            if len(path_to_v) > len(path_to_farthest_vertex):
+                path_to_farthest_vertex = path_to_v
+        return path_to_farthest_vertex
 
     def find_all_cycles(self) -> List[List[int]]:
         if self.vertex.count(None) == len(self.vertex):
